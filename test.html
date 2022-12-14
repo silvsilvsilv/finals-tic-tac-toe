@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .square{
+        background: #fff;
+        border: 1px solid #999;
+        float: left;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 34px;
+        height: 34px;
+        margin-right: -1px;
+        margin-top: -1px;
+        padding: 0;
+        text-align: center;
+        width: 34px;
+        }
+    </style>
+</head>
+<body>
+    Input grid size (rows by columns)<br>
+    <input type="number" id="row"> by <input type="number" id="col"><br><br>
+    <button onclick="generateGrid(row.value,col.value)">Generate Grid</button><br><br>
+    <div id="grid" class="grid">
+        <!-- <div class="row">
+            <button class="square"></button>
+            <button class="square"></button>
+            <button class="square"></button>
+        </div><br><br>
+        <div class="row">
+            <button class="square"></button>
+            <button class="square"></button>
+            <button class="square"></button>
+        </div> -->
+    </div>
+</body>
+<script>
+ let grid = document.getElementById('grid');
+ let columns = '<button class="square"></button>';
+ let cols = "";   
+ const generateGrid = (row,col) =>{
+    
+    for (let j = 0; j<col;j++){
+        cols += columns; 
+    }
+    
+    for(let i = 0;i<row;i++){
+    grid.innerHTML += `<div class='row'>${cols}</div><br><br>`;
+        }
+ }
+</script>
+</html>
