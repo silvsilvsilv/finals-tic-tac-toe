@@ -15,7 +15,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Gamemode from './Gamemode';
 import SetGridSize from './Grid';
-import Review from './Review';
+// import Review from './Review';
+import PickSymbols from './PickSymbols';
 import Game from './Game';
 
 function Copyright() {
@@ -37,7 +38,7 @@ function getStepContent(step) {
     case 1:
       return <SetGridSize />;
     case 2:
-      return <Review />;
+      return <PickSymbols />;
     default:
       throw new Error('Unknown step');
   }
