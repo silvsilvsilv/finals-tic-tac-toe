@@ -24,21 +24,22 @@ export default function Gamemode() {
       <Typography gutterBottom padding="15px">
         Please select among the following game modes: 
       </Typography>
+
       <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
-        <InputLabel id="select-mode-label">Mode</InputLabel>
-        <Select
-          labelId="select-mode-label"
-          id="select-mode"
-          value={mode}
-          label="Mode"
-          onChange={handleMode} 
-        >
-          <MenuItem value={'pvp'} >Player vs Player</MenuItem>
-          <MenuItem value={'pvc'}>Player vs Computer</MenuItem>
-          <MenuItem value={'cvc'}>Computer vs Computer</MenuItem>
-        </Select>
-      </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="select-mode-label">Mode</InputLabel>
+            <Select
+              labelId="select-mode-label"
+              id="select-mode"
+              value={mode}
+              label="Mode"
+              onChange={handleMode} 
+            >
+              <MenuItem value={'pvp'} >Player vs Player</MenuItem>
+              <MenuItem value={'pvc'}>Player vs Computer</MenuItem>
+              <MenuItem value={'cvc'}>Computer vs Computer</MenuItem>
+            </Select>
+        </FormControl>
     </Box>
     </React.Fragment>
     

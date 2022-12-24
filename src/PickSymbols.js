@@ -16,18 +16,18 @@ export default function PickSymbols() {
 
       <Grid container spacing={3} padding = "20px">
         <Grid item xs={12} >
-        <FormControl fullWidth>
-        <InputLabel id="select-symb-label">Symbol</InputLabel>
-        <Select 
-          labelId="select-symbol"
-          id="select-symb"
-          label="Symbol"
-          defaultValue = {'X'}
-        >
-          <MenuItem value={'X'} selected >X</MenuItem>
-          <MenuItem value={'O'} selected >O</MenuItem>
-        </Select>
-        </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id="select-symb-label">Symbol</InputLabel>
+              <Select 
+                labelId="select-symbol"
+                id="select-symb"
+                label="Symbol"
+                defaultValue = {'X'}
+              >
+                <MenuItem value={'X'} selected >X</MenuItem>
+                <MenuItem value={'O'} selected >O</MenuItem>
+              </Select>
+          </FormControl>
         </Grid>
       </Grid>
     </>

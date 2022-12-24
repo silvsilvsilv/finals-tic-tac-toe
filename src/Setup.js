@@ -87,6 +87,7 @@ export default function Setup() {
             Tic Tac Toe Game
           </Typography>
         </Toolbar>
+
       </AppBar>
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
@@ -126,6 +127,7 @@ export default function Setup() {
         </Paper>
         <Copyright />
       </Container>
+      
     </ThemeProvider>
   );
 }
