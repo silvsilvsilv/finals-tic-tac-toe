@@ -83,7 +83,7 @@ export default function Setup() {
         }}
       >
         <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
+          <Typography variant="h6" >
             Tic Tac Toe Game
           </Typography>
         </Toolbar>
@@ -94,13 +94,14 @@ export default function Setup() {
           <Typography component="h1" variant="h4" align="center">
             Determine game mode
           </Typography>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
+
+            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
           
           {activeStep === steps.length ? (
             <Game />
@@ -124,6 +125,7 @@ export default function Setup() {
               </Box>
             </React.Fragment>
           )}
+          
         </Paper>
         <Copyright />
       </Container>

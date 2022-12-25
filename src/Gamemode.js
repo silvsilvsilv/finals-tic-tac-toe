@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import ReceivingComponent from './test';
 
 export default function Gamemode() {
   const [mode, setMode] = React.useState('pvp');
@@ -25,7 +26,7 @@ export default function Gamemode() {
         Please select among the following game modes: 
       </Typography>
 
-      <Box sx={{ minWidth: 120 }}>
+      <Box sx={ { minWidth: 120 } }>
         <FormControl fullWidth>
           <InputLabel id="select-mode-label">Mode</InputLabel>
             <Select
@@ -35,12 +36,13 @@ export default function Gamemode() {
               label="Mode"
               onChange={handleMode} 
             >
-              <MenuItem value={'pvp'} >Player vs Player</MenuItem>
-              <MenuItem value={'pvc'}>Player vs Computer</MenuItem>
-              <MenuItem value={'cvc'}>Computer vs Computer</MenuItem>
+              <MenuItem value='pvp'>Player vs Player</MenuItem>
+              <MenuItem value='pvc'>Player vs Computer</MenuItem>
+              <MenuItem value='cvc'>Computer vs Computer</MenuItem>
             </Select>
         </FormControl>
     </Box>
+    <ReceivingComponent mode={mode} />
     </React.Fragment>
     
     

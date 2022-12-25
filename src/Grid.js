@@ -6,12 +6,21 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
+import ReceivingComponent from './test';
+
 export default function SetGridSize() {
-  const [grid, setGrid] = React.useState();
+  const [row, setRow] = React.useState(3);
   
-  const handleGrid = (event) => {
-    setGrid(event.target.value);
+  const handleRow = (event) => {
+    setRow(event.target.value);
   };
+
+  const [colu, setCol] = React.useState(3);
+  
+  const handleCol = (event) => {
+    setCol(event.target.value);
+  };
+
 
   return (
     <React.Fragment>
@@ -26,14 +35,13 @@ export default function SetGridSize() {
             <Select 
               labelId="select-row-label"
               id="select-row"
-              value={grid}
+              value={row}
               label="Rows"
-              onChange={handleGrid} 
-              defaultValue = {'row3'}
+              onChange={handleRow} 
             >
-              <MenuItem value={'row3'} selected >3</MenuItem>
-              <MenuItem value={'row4'}>4</MenuItem>
-              <MenuItem value={'row5'}>5</MenuItem>
+              <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={4}>4</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -44,18 +52,18 @@ export default function SetGridSize() {
             <Select 
               labelId="select-col-label"
               id="select=col"
-              value={grid}
+              value={colu}
               label="Columns"
-              onChange={handleGrid} 
+              onChange={handleCol} 
               defaultValue = {'col3'}
             >
-              <MenuItem value={'col3'}>3</MenuItem>
-              <MenuItem value={'col4'}>4</MenuItem>
-              <MenuItem value={'col5'}>5</MenuItem>
+              <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={4}>4</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
             </Select>
           </FormControl>
         </Grid>
-
+      <ReceivingComponent row={row} column={colu}/>
       </Grid>
     </React.Fragment>
   );

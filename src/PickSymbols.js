@@ -5,9 +5,18 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
+import ReceivingComponent from './test';
 
 
 export default function PickSymbols() {
+  
+  const [symb, setSymb] = React.useState('X');
+  
+  const handleSymb = (event) => {
+    setSymb(event.target.value);
+  };
+
+  
   return (
     <>
       <Typography variant="h6" gutterBottom>
@@ -22,14 +31,16 @@ export default function PickSymbols() {
                 labelId="select-symbol"
                 id="select-symb"
                 label="Symbol"
-                defaultValue = {'X'}
+                value = {symb}
+                onChange={handleSymb}
               >
-                <MenuItem value={'X'} selected >X</MenuItem>
-                <MenuItem value={'O'} selected >O</MenuItem>
+                <MenuItem value='X'>X</MenuItem>
+                <MenuItem value='O'>O</MenuItem>
               </Select>
           </FormControl>
         </Grid>
       </Grid>
+      <ReceivingComponent symbol={symb} />
     </>
   );
 }
