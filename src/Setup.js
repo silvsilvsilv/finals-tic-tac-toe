@@ -32,23 +32,6 @@ function Copyright() {
 
 const steps = ['Game mode', 'Grid size', 'Symbols'];
 
-function getStepContent(step) {
-  const pull_data = (data) =>{
-    console.log(data);
-  }
-  
-  switch (step) {
-    case 0:
-      return <Gamemode func={pull_data}/>;
-    case 1:
-      return <SetGridSize />;
-    case 2:
-      return <PickSymbols />;
-    default:
-      throw new Error('Unknown step');
-  }
-}
-
 const theme = createTheme({ 
   palette: {
   primary: {
@@ -67,6 +50,24 @@ const theme = createTheme({
 
 export default function Setup() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [mode, setMode] = React.useState('pvp');
+
+  function getStepContent(step) {
+    const pull_data = (data) =>{
+      console.log(data);
+    }
+    
+    switch (step) {
+      case 0:
+        return <Gamemode mode={mode} setMode={setMode} />; // pass current state and update function to children
+      case 1:
+        return <SetGridSize />;
+      case 2:
+        return <PickSymbols />;
+      default:
+        throw new Error('Unknown step');
+    }
+  }
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
