@@ -5,12 +5,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
-import ReceivingComponent from './test';
 
 
-export default function PickSymbols() {
+export default function PickSymbols({symb, setSymb}) {
   
-  const [symb, setSymb] = React.useState('X');
   
   const handleSymb = (event) => {
     setSymb(event.target.value);
@@ -40,7 +38,6 @@ export default function PickSymbols() {
           </FormControl>
         </Grid>
       </Grid>
-      <ReceivingComponent symbol={symb} />
     </>
   );
 }

@@ -6,7 +6,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-import ReceivingComponent from './test';
 
 export default function Gamemode({mode, setMode}) { // destructure the props directly for clarity
 
@@ -15,6 +14,7 @@ export default function Gamemode({mode, setMode}) { // destructure the props dir
     setMode(event.target.value);
   };
 
+  console.log(mode)
   return (
     
     <React.Fragment>

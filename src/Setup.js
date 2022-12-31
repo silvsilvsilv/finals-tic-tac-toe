@@ -51,19 +51,19 @@ const theme = createTheme({
 export default function Setup() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [mode, setMode] = React.useState('pvp');
+  const [row, setRow] = React.useState(3);
+  const [column, setColumn] = React.useState(3);
+  const [symb, setSymb] = React.useState('X');
 
   function getStepContent(step) {
-    const pull_data = (data) =>{
-      console.log(data);
-    }
     
     switch (step) {
       case 0:
         return <Gamemode mode={mode} setMode={setMode} />; // pass current state and update function to children
       case 1:
-        return <SetGridSize />;
+        return <SetGridSize row={row} setRow={setRow} column={column} setColumn={setColumn}/>;
       case 2:
-        return <PickSymbols />;
+        return <PickSymbols symb={symb} setSymb={setSymb} />;
       default:
         throw new Error('Unknown step');
     }
@@ -131,7 +131,7 @@ export default function Setup() {
               </Box>
             </React.Fragment>
           )}
-          
+          <ReceivingComponent mode={mode} row={row} column={column}  symb={symb}/> 
         </Paper>
         <Copyright />
       </Container>

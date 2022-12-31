@@ -6,19 +6,16 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
-import ReceivingComponent from './test';
 
-export default function SetGridSize() {
-  const [row, setRow] = React.useState(3);
+export default function SetGridSize({row, setRow, column, setColumn}) {
+  
   
   const handleRow = (event) => {
     setRow(event.target.value);
   };
 
-  const [colu, setCol] = React.useState(3);
-  
   const handleCol = (event) => {
-    setCol(event.target.value);
+    setColumn(event.target.value);
   };
 
 
@@ -52,7 +49,7 @@ export default function SetGridSize() {
             <Select 
               labelId="select-col-label"
               id="select=col"
-              value={colu}
+              value={column}
               label="Columns"
               onChange={handleCol} 
               defaultValue = {'col3'}
@@ -63,7 +60,7 @@ export default function SetGridSize() {
             </Select>
           </FormControl>
         </Grid>
-      <ReceivingComponent row={row} column={colu}/>
+
       </Grid>
     </React.Fragment>
   );
