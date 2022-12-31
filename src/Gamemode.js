@@ -8,14 +8,13 @@ import Select from '@mui/material/Select';
 
 import ReceivingComponent from './test';
 
-export default function Gamemode(props) {
-  const [mode, setMode] = React.useState('pvp');
-  
+export default function Gamemode({mode, setMode}) { // destructure the props directly for clarity
+
+  // Implement `onChange` func from https://mui.com/material-ui/api/select/
   const handleMode = (event) => {
     setMode(event.target.value);
   };
-  
-  props.func(mode);
+
   return (
     
     <React.Fragment>
@@ -36,7 +35,6 @@ export default function Gamemode(props) {
               value={mode}
               label="Mode"
               onChange={handleMode}
-              defaultValue='pvp' 
             >
               <MenuItem value='pvp'>Player vs Player</MenuItem>
               <MenuItem value='pvc'>Player vs Computer</MenuItem>
@@ -44,7 +42,7 @@ export default function Gamemode(props) {
             </Select>
         </FormControl>
     </Box>
-  
+
     </React.Fragment>
   );
 }
