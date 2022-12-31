@@ -8,13 +8,14 @@ import Select from '@mui/material/Select';
 
 import ReceivingComponent from './test';
 
-export default function Gamemode() {
+export default function Gamemode(props) {
   const [mode, setMode] = React.useState('pvp');
   
   const handleMode = (event) => {
     setMode(event.target.value);
   };
-
+  
+  props.func(mode);
   return (
     
     <React.Fragment>
@@ -34,7 +35,8 @@ export default function Gamemode() {
               id="select-mode"
               value={mode}
               label="Mode"
-              onChange={handleMode} 
+              onChange={handleMode}
+              defaultValue='pvp' 
             >
               <MenuItem value='pvp'>Player vs Player</MenuItem>
               <MenuItem value='pvc'>Player vs Computer</MenuItem>
@@ -42,9 +44,7 @@ export default function Gamemode() {
             </Select>
         </FormControl>
     </Box>
-    <ReceivingComponent mode={mode} />
+  
     </React.Fragment>
-    
-    
   );
 }

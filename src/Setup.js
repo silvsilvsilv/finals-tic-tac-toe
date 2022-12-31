@@ -18,6 +18,7 @@ import SetGridSize from './Grid';
 // import Review from './Review';
 import PickSymbols from './PickSymbols';
 import Game from './Game';
+import ReceivingComponent from './test';
 
 function Copyright() {
   return (
@@ -32,9 +33,13 @@ function Copyright() {
 const steps = ['Game mode', 'Grid size', 'Symbols'];
 
 function getStepContent(step) {
+  const pull_data = (data) =>{
+    console.log(data);
+  }
+  
   switch (step) {
     case 0:
-      return <Gamemode />;
+      return <Gamemode func={pull_data}/>;
     case 1:
       return <SetGridSize />;
     case 2:
