@@ -17,7 +17,7 @@ class Board extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            squares:Array(9).fill(null),
+            squares:Array(props.row).fill().map( () => Array(props.column).fill(null) ),
             xIsNext:true,
             gameMode:props.mode,
             gridRow:props.row,
@@ -26,73 +26,102 @@ class Board extends React.Component {
         }
     }
 
-    handleClick(i){
+    handleClick(numOfRow,numOfColumn){
         const squares = this.state.squares.slice();
-        if (calculateWinner(squares) || squares[i]) {
+        if (checkWinner(squares) || squares[numOfRow][numOfColumn]) {
             return;
           }
-        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        squares[numOfRow][numOfColumn] = this.state.xIsNext ? 'X' : 'O';
         this.setState({squares:squares, xIsNext:!this.state.xIsNext})
     }
 
-    renderSquare(i) {
-      return <Square value={this.state.squares[i]} onClick={()=>this.handleClick(i)} />;
+    renderSquare(numOfRow,numOfColumn) {
+      return <Square value={this.state.squares[numOfRow][numOfColumn]} onClick={()=>this.handleClick(numOfRow,numOfColumn)} />;
     }
   
     render() {
-        const winner = calculateWinner(this.state.squares);
-
+        const winner = checkWinner(this.state.squares);
+        console.log(this.state.squares);
         let status;
         if (winner) {
           status = 'Winner: ' + winner;
         } else {
           status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
-  
+        
+        const rows = []; //for rendering of the square components
+            for (let i = 0; i < this.state.gridRow; i++) {
+              const cols = [];
+              for (let j = 0; j < this.state.gridColumn; j++) {
+                cols.push(this.renderSquare(i, j));
+              }
+              rows.push(<div className="board-row">{cols}</div>);
+            }
       return (
         <div>
           <div className="status">{status}</div>
-          <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
-          </div>
+          <div>{rows}</div>
           {this.state.gameMode},{this.state.gridRow},{this.state.gridColumn},{this.state.startSymbol}
         </div>
       );
     }
     }
 
-  function calculateWinner(squares) {
-    const lines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-    for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[i];
-      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
+  // function calculateWinner(squares) { ##### HARDCODED METHOD, OUTDATED ######
+  //   const lines = [
+  //     [0, 1, 2],
+  //     [3, 4, 5],
+  //     [6, 7, 8],
+  //     [0, 3, 6],
+  //     [1, 4, 7],
+  //     [2, 5, 8],
+  //     [0, 4, 8],
+  //     [2, 4, 6],
+  //   ];
+  //   for (let i = 0; i < lines.length; i++) {
+  //     const [a, b, c] = lines[i];
+  //     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+  //       return squares[a];
+  //     }
+  //   }
+  //   return null;
+  // }
+  
+  function checkWinner(grid) {
+    // loop through each cell in the grid
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[i].length; j++) {
+        // check if there are three consecutive cells with the same value
+        // horizontally to the right
+        if (j < grid[i].length - 2 &&
+            grid[i][j] === grid[i][j + 1] &&
+            grid[i][j + 1] === grid[i][j + 2]) {
+          return grid[i][j];
+        }
+        // vertically downwards
+        if (i < grid.length - 2 &&
+            grid[i][j] === grid[i + 1][j] &&
+            grid[i + 1][j] === grid[i + 2][j]) {
+          return grid[i][j];
+        }
+        // diagonally downwards to the right
+        if (i < grid.length - 2 && j < grid[i].length - 2 &&
+            grid[i][j] === grid[i + 1][j + 1] &&
+            grid[i + 1][j + 1] === grid[i + 2][j + 2]) {
+          return grid[i][j];
+        }
+        // diagonally downwards to the left
+        if (i < grid.length - 2 && j > 2 &&
+            grid[i][j] === grid[i + 1][j - 1] &&
+            grid[i + 1][j - 1] === grid[i + 2][j - 2]) {
+          return grid[i][j];
+        }
       }
     }
+    // if we get here, there were no consecutive cells with the same value
     return null;
   }
-  
+
   export default class Game extends React.Component {
     constructor(props){
       super(props);
