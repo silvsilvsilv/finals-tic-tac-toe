@@ -14,7 +14,6 @@ export default function Gamemode({mode, setMode}) { // destructure the props dir
     setMode(event.target.value);
   };
 
-  console.log(mode)
   return (
     
     <React.Fragment>

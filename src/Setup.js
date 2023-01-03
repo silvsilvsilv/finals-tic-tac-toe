@@ -15,10 +15,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Gamemode from './Gamemode';
 import SetGridSize from './Grid';
-// import Review from './Review';
 import PickSymbols from './PickSymbols';
 import Game from './Game';
-import ReceivingComponent from './test';
+
 
 function Copyright() {
   return (
@@ -97,8 +96,12 @@ export default function Setup() {
       </AppBar>
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+        {activeStep === steps.length ? (
+            <Game mode={mode} row={row} column={column}  symb={symb} />
+          ) : (
+          <>
           <Typography component="h1" variant="h4" align="center">
-            Setup for the game
+          Setup for the game
           </Typography>
 
             <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
@@ -109,9 +112,6 @@ export default function Setup() {
               ))}
             </Stepper>
           
-          {activeStep === steps.length ? (
-            <Game />
-          ) : (
             <React.Fragment>
               {getStepContent(activeStep)}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -130,8 +130,9 @@ export default function Setup() {
                 </Button>
               </Box>
             </React.Fragment>
+            </>
           )}
-          <ReceivingComponent mode={mode} row={row} column={column}  symb={symb}/> 
+    
         </Paper>
         <Copyright />
       </Container>

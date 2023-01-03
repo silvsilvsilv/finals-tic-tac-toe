@@ -19,6 +19,10 @@ class Board extends React.Component {
         this.state = {
             squares:Array(9).fill(null),
             xIsNext:true,
+            gameMode:props.mode,
+            gridRow:props.row,
+            gridColumn:props.column,
+            startSymbol:props.symbol
         }
     }
 
@@ -63,6 +67,7 @@ class Board extends React.Component {
             {this.renderSquare(7)}
             {this.renderSquare(8)}
           </div>
+          {this.state.gameMode},{this.state.gridRow},{this.state.gridColumn},{this.state.startSymbol}
         </div>
       );
     }
@@ -89,15 +94,30 @@ class Board extends React.Component {
   }
   
   export default class Game extends React.Component {
+    constructor(props){
+      super(props);
+      this.state={
+        mode:props.mode,
+        row:props.row,
+        column:props.column,
+        symbol:props.symb
+      };
+    }
     render() {
       return (
         <div className="game" align="center">
           <div className="game-board">
-            <Board />
+            <Board 
+            mode={this.state.mode} 
+            row={this.state.row} 
+            column={this.state.column} 
+            symbol={this.state.symbol}
+
+            />
           </div>
           <div className="game-info">
-            <div>{'status'}</div>
-            <ol>{/* TODO */}</ol>
+            <div></div>
+            
           </div>
         </div>
       );
