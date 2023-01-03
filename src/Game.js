@@ -136,17 +136,15 @@ class Board extends React.Component {
       return (
         <div className="game" align="center">
           <div className="game-board">
-            <Board 
-            mode={this.state.mode} 
-            row={this.state.row} 
-            column={this.state.column} 
-            symbol={this.state.symbol}
+              <Board 
+              mode={this.state.mode} 
+              row={this.state.row} 
+              column={this.state.column} 
+              symbol={this.state.symbol}
 
-            />
+              />
           </div>
           <div className="game-info">
-            <div></div>
-            
           </div>
         </div>
       );
