@@ -17,6 +17,7 @@ body {
   
   .status {
     margin-bottom: 10px;
+    font-size:xx-large;
   }
   
   .square {
@@ -33,7 +34,21 @@ body {
     text-align: center;
     width: 100px;
   }
-  
+  .square-winner {
+    background: #fff;
+    border: 1px solid #999;
+    color:red;
+    float: left;
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 34px;
+    height: 100px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 100px;
+  }
   .square:focus {
     outline: none;
   }
