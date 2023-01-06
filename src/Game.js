@@ -7,9 +7,17 @@ function Square(props){
     // check whether this coordinate is a winnning coordinate
     let isWinnerCoord=false
     // TODO: check with actual list of winning coordinates here, populate list from checkWinner()
-    isWinnerCoord=props.winner==props.value;
+    
+    for(let i = 0; i<props.winCoord.length;i++){
+        if(props.winCoord[i][0]==props.row && props.winCoord[i][1]==props.col){
+          isWinnerCoord=true
+        } 
+    }
       return (
-        <button key={" "+props.row+props.col} className={(isWinnerCoord)?'square-winner':'square'} onClick={(props.winner)?null:props.onClick}>
+        <button 
+        key={""+props.row+props.col} 
+        className={(isWinnerCoord)?'square-winner':'square'} 
+        onClick={(props.winner)?null:props.onClick}>
           {props.value}
         </button>
       );
@@ -21,14 +29,25 @@ class Board extends React.Component {
         super(props);
         this.state = {
             squares:Array(props.row).fill().map( () => Array(props.column).fill(null) ),
-            xIsNext:(props.symbol==='X'? true : false),
+            xIsNext:(props.symbol==='X'? true:false), // todo: pls change this to just current turn symbol
             gameMode:props.mode,
             gridRow:props.row,
             gridColumn:props.column,
             lowestValue: Math.min(props.row, props.column),
             winner:null,
             status: "",
+            winnerCoord: [],
+            // put this to props later ah
+            pvp:(props.mode==='pvp'?true:false),
+            pvc:(props.mode==='pvc'?true:false),
+            cvc:(props.mode==='cvc'?true:false),
+            computerTurn: 'O' // what the computer will run as
         }
+    }
+
+    // usage: this.setState{...,currentTurn : nextTurn(this.state.currentTurn) }
+    nextTurn(symbol) {
+      return symbol=='X'?'O':'X'
     }
     
     handleClick(rowNum,colNum){
@@ -49,6 +68,7 @@ class Board extends React.Component {
       winner={this.state.winner}
       row={rowNum}
       col={colNum}
+      winCoord={this.state.winnerCoord}
       />;
     }
 
@@ -58,21 +78,86 @@ class Board extends React.Component {
       }
       const winner = checkWinner(this.state.squares,this.state.lowestValue);
       if (winner[0]) {
-        if(winner[1]=="") {
+        if(winner[1]==="") {
           this.setState({status:`Tie!`});
         }else {
           this.setState({status:`Winner: ${winner[1]}`});
-          console.log(winner[1]); 
+          console.log("Winner is %s with winning move %O",winner[1], winner[2]); 
         }
-        this.setState({winner:winner[1]})
+        this.setState({winner:winner[1], winnerCoord:winner[2]})
+        return
       } else {
         this.setState({status :`Next player: ${(this.state.xIsNext ? 'X' : 'O')}`})
+      }
+      // for AI 
+      // Check if it's ai's turn
+      if(this.state.pvc && 
+        ( 
+        (this.state.computerTurn=='X' && this.state.xIsNext ) || 
+        (this.state.computerTurn=='O' && !this.state.xIsNext)
+        ) ) {
+        // AI do the shet 
+        this.moveAI(this.state.computerTurn);
+      }
+      let cvc=false;
+      if (cvc) {
+        this.moveAI(this.state.xIsNext?'X':'O')
+      }
+    }
+
+    moveAI(turn) {
+      //AI shenanigans
+      this.bitBetterAI(turn);
+    }
+
+    bitBetterAI(turn) {
+      const squares = this.state.squares.slice();
+      // TODO: Probably can add limit if can't find within certain tries it just skip turn, change the xIsNext only
+      while(true) {
+        // get random col and row
+        let i = Math.floor(Math.random() * this.state.gridRow)
+        let j = Math.floor(Math.random() * this.state.gridColumn)
+        if(!squares[i][j]) {
+          // just move here bich  
+          squares[i][j]= turn
+          this.setState({squares:squares, xIsNext:!this.state.xIsNext})
+          // just move once la
+          return;
+        }
+      }
+    }
+
+    stupidAI(turn) {
+      const squares = this.state.squares.slice();
+      for (let i = 0; i < squares.length ; i++) {
+        for (let j = 0; j < squares[i].length; j++) {
+          if(!squares[i][j]) {
+            // just move here bich
+            squares[i][j]= turn
+            this.setState({squares:squares, xIsNext:!this.state.xIsNext})
+            // just move once la
+            return;
+          }
+        }
       }
     }
     
 
     componentDidUpdate(_, prevState) {
       this.handleBoardChange(prevState)
+    }
+
+    componentDidMount() {
+      // handle first turn AI move
+      if(this.state.pvc && ( (this.state.computerTurn=='X' && this.state.xIsNext ) || (this.state.computerTurn=='O' && !this.state.xIsNext))) {
+        // AI do the shet 
+        this.moveAI(this.state.computerTurn);
+      }
+      // TODO: change this accordingly later!!!!
+      let cvc=false
+      if (cvc) {
+        this.moveAI(this.state.xIsNext?'X':'O')
+      }
     }
   
     render() {       
@@ -153,22 +238,27 @@ class Board extends React.Component {
   function checkWinner(grid, n) {
     console.log("checking winner for size %d",n)
     console.log("grid to check is %O",grid)
-    
+  
     // Check rows
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid[i].length - n + 1; j++) {
-        let consecutive = true;
-        if (grid[i][j]== null) {
+        
+        if (grid[i][j]== null) {            
+          
           continue
-        }
+        }let consecutive = true;
+        let referenceArray=[]; 
         for (let k = 0; k < n; k++) {
+          referenceArray.push([i,j+k]);
           if (grid[i][j+k] !== grid[i][j]) {
+
             consecutive = false;
             break;
           }
         }
         if (consecutive) {
-          return [true, grid[i][j]]
+          
+          return [true, grid[i][j],referenceArray]
         }
       }
     }
@@ -176,18 +266,24 @@ class Board extends React.Component {
     // Check columns
     for (let i = 0; i < grid.length - n + 1; i++) {
       for (let j = 0; j < grid[i].length; j++) {
+        
         if (grid[i][j]== null) {
+          
           continue
         }
         let consecutive = true;
+        let referenceArray=[];
         for (let k = 0; k < n; k++) {
+          referenceArray.push([i+k,j]);
           if (grid[i+k][j] !== grid[i][j]) {
+            
             consecutive = false;
             break;
           }
         }
         if (consecutive) {
-          return [true, grid[i][j]]
+          
+          return [true, grid[i][j],referenceArray]
         }
       }
     }
@@ -195,35 +291,47 @@ class Board extends React.Component {
     // Check diagonals
     for (let i = 0; i < grid.length - n + 1; i++) {
       for (let j = 0; j < grid[i].length - n + 1; j++) {
+        
         if (grid[i][j]== null) {
+          
           continue
         }
         let consecutive = true;
+        let referenceArray=[];
         for (let k = 0; k < n; k++) {
+          referenceArray.push([i+k,j+k]);
           if (grid[i+k][j+k] !== grid[i][j]) {
+            
             consecutive = false;
             break;
           }
         }
         if (consecutive) {
-          return [true, grid[i][j]]
+          
+          return [true, grid[i][j],referenceArray]
         }
       }
     }
     for (let i = 0; i < grid.length - n + 1; i++) {
       for (let j = n - 1; j < grid[i].length; j++) {
+        
         if (grid[i][j]== null) {
+          
           continue
         }
         let consecutive = true;
+        let referenceArray=[];
         for (let k = 0; k < n; k++) {
+          referenceArray.push([i+k,j-k]);
           if (grid[i+k][j-k] !== grid[i][j]) {
+            
             consecutive = false;
             break;
           }
         }
         if (consecutive) {
-          return [true, grid[i][j]]
+          
+          return [true, grid[i][j],referenceArray]
         }
       }
     }
@@ -231,19 +339,19 @@ class Board extends React.Component {
     // Check tie 
     let full=true;
     for (let i = 0; i < grid.length ; i++) {
-      for (let j = n - 1; j < grid[i].length; j++) {
+      for (let j = 0; j < grid[i].length; j++) {
         if(!grid[i][j]) {
           full=false;
         }
       }
     }
     if(full) {
-      return [true, ""]
+      return [true, "", []]
     }
 
     console.log("no match found")
   
-    return [false, ""]
+    return [false, "", []]
   }
   
   export default class Game extends React.Component {
@@ -253,7 +361,7 @@ class Board extends React.Component {
         mode:props.mode,
         row:props.row,
         column:props.column,
-        symbol:props.symb
+        symbol:props.symb,
       };
     }
     render() {
@@ -265,7 +373,6 @@ class Board extends React.Component {
               row={this.state.row} 
               column={this.state.column} 
               symbol={this.state.symbol}
-
               />
           </div>
           <div className="game-info">

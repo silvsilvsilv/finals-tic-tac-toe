@@ -97,7 +97,7 @@ export default function Setup() {
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
         {activeStep === steps.length ? (
-            <Game mode={mode} row={row} column={column}  symb={symb} />
+            <Game mode={mode} row={row} column={column}  symb={symb}/>
           ) : (
           <>
           <Typography component="h1" variant="h4" align="center">
