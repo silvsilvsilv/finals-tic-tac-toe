@@ -18,14 +18,14 @@ class Board extends React.Component {
         super(props);
         this.state = {
             squares:Array(props.row).fill().map( () => Array(props.column).fill(null) ),
-            xIsNext:true,
+            xIsNext:(props.symbol==='X'? true : false),
             gameMode:props.mode,
             gridRow:props.row,
             gridColumn:props.column,
-            startSymbol:props.symbol
+            lowestValue: ( [props.row,props.column].sort( function(a,b) {return a-b}) )
         }
     }
-
+    
     handleClick(numOfRow,numOfColumn){
         const squares = this.state.squares.slice();
         if (checkWinner(squares) || squares[numOfRow][numOfColumn]) {
@@ -40,8 +40,9 @@ class Board extends React.Component {
     }
   
     render() {
-        const winner = checkWinner(this.state.squares);
+        const winner = checkWinner(this.state.squares,this.state.lowestValue[0]);
         console.log(this.state.squares);
+        console.log(this.state.lowestValue[0]);
         let status;
         if (winner) {
           status = 'Winner: ' + winner;
@@ -49,7 +50,8 @@ class Board extends React.Component {
           status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
         
-        const rows = []; //for rendering of the square components
+        //for rendering of the square components
+        const rows = []; 
             for (let i = 0; i < this.state.gridRow; i++) {
               const cols = [];
               for (let j = 0; j < this.state.gridColumn; j++) {
@@ -61,7 +63,7 @@ class Board extends React.Component {
         <div>
           <div className="status">{status}</div>
           <div>{rows}</div>
-          {this.state.gameMode},{this.state.gridRow},{this.state.gridColumn},{this.state.startSymbol}
+          {this.state.gameMode},{this.state.gridRow},{this.state.gridColumn},{this.state.xIsNext}
         </div>
       );
     }
@@ -87,41 +89,107 @@ class Board extends React.Component {
   //   return null;
   // }
   
-  function checkWinner(grid) {
-    // loop through each cell in the grid
+  // function checkWinner(grid) {
+  //   // loop through each cell in the grid
+  //   for (let i = 0; i < grid.length; i++) {
+  //     for (let j = 0; j < grid[i].length; j++) {
+  //       // check if there are three consecutive cells with the same value
+  //       // horizontally to the right
+  //       if (j < grid[i].length - 2 &&
+  //           grid[i][j] === grid[i][j + 1] &&
+  //           grid[i][j + 1] === grid[i][j + 2]) {
+  //         return grid[i][j];
+  //       }
+  //       // vertically downwards
+  //       if (i < grid.length - 2 &&
+  //           grid[i][j] === grid[i + 1][j] &&
+  //           grid[i + 1][j] === grid[i + 2][j]) {
+  //         return grid[i][j];
+  //       }
+  //       // diagonally downwards to the right
+  //       if (i < grid.length - 2 && j <= grid[i].length - 2 &&
+  //           grid[i][j] === grid[i + 1][j + 1] &&
+  //           grid[i + 1][j + 1] === grid[i + 2][j + 2]) {
+  //         return grid[i][j];
+  //       }
+  //       // diagonally downwards to the left
+  //       if (i < grid.length - 2 && j > 2 &&
+  //           grid[i][j] === grid[i + 1][j - 1] &&
+  //           grid[i + 1][j - 1] === grid[i + 2][j - 2]) {
+  //         return grid[i][j];
+  //       }
+  //     }
+  //   }
+  //   // if we get here, there were no consecutive cells with the same value
+  //   return null;
+  // }
+
+  function checkWinner(grid, n) {
+    // Check rows
     for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-        // check if there are three consecutive cells with the same value
-        // horizontally to the right
-        if (j < grid[i].length - 2 &&
-            grid[i][j] === grid[i][j + 1] &&
-            grid[i][j + 1] === grid[i][j + 2]) {
-          return grid[i][j];
+      for (let j = 0; j < grid[i].length - n + 1; j++) {
+        let consecutive = true;
+        for (let k = 0; k < n; k++) {
+          if (grid[i][j+k] !== grid[i][j]) {
+            consecutive = false;
+            break;
+          }
         }
-        // vertically downwards
-        if (i < grid.length - 2 &&
-            grid[i][j] === grid[i + 1][j] &&
-            grid[i + 1][j] === grid[i + 2][j]) {
-          return grid[i][j];
-        }
-        // diagonally downwards to the right
-        if (i < grid.length - 2 && j < grid[i].length - 2 &&
-            grid[i][j] === grid[i + 1][j + 1] &&
-            grid[i + 1][j + 1] === grid[i + 2][j + 2]) {
-          return grid[i][j];
-        }
-        // diagonally downwards to the left
-        if (i < grid.length - 2 && j > 2 &&
-            grid[i][j] === grid[i + 1][j - 1] &&
-            grid[i + 1][j - 1] === grid[i + 2][j - 2]) {
-          return grid[i][j];
+        if (consecutive) {
+          return true, grid[i][j];
         }
       }
     }
-    // if we get here, there were no consecutive cells with the same value
-    return null;
+  
+    // Check columns
+    for (let i = 0; i < grid.length - n + 1; i++) {
+      for (let j = 0; j < grid[i].length; j++) {
+        let consecutive = true;
+        for (let k = 0; k < n; k++) {
+          if (grid[i+k][j] !== grid[i][j]) {
+            consecutive = false;
+            break;
+          }
+        }
+        if (consecutive) {
+          return true, grid[i][j];
+        }
+      }
+    }
+  
+    // Check diagonals
+    for (let i = 0; i < grid.length - n + 1; i++) {
+      for (let j = 0; j < grid[i].length - n + 1; j++) {
+        let consecutive = true;
+        for (let k = 0; k < n; k++) {
+          if (grid[i+k][j+k] !== grid[i][j]) {
+            consecutive = false;
+            break;
+          }
+        }
+        if (consecutive) {
+          return true, grid[i][j];
+        }
+      }
+    }
+    for (let i = 0; i < grid.length - n + 1; i++) {
+      for (let j = n - 1; j < grid[i].length; j++) {
+        let consecutive = true;
+        for (let k = 0; k < n; k++) {
+          if (grid[i+k][j-k] !== grid[i][j]) {
+            consecutive = false;
+            break;
+          }
+        }
+        if (consecutive) {
+          return true, grid[i][j];
+        }
+      }
+    }
+  
+    return false;
   }
-
+  
   export default class Game extends React.Component {
     constructor(props){
       super(props);
@@ -145,6 +213,7 @@ class Board extends React.Component {
               />
           </div>
           <div className="game-info">
+            
           </div>
         </div>
       );
