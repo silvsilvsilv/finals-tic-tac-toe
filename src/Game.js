@@ -9,7 +9,7 @@ function Square(props){
     // TODO: check with actual list of winning coordinates here, populate list from checkWinner()
     
     for(let i = 0; i<props.winCoord.length;i++){
-        if(props.winCoord[i][0]==props.row && props.winCoord[i][1]==props.col){
+        if(props.winCoord[i][0]===props.row && props.winCoord[i][1]===props.col){
           isWinnerCoord=true
         } 
     }
@@ -29,7 +29,7 @@ class Board extends React.Component {
         super(props);
         this.state = {
             squares:Array(props.row).fill().map( () => Array(props.column).fill(null) ),
-            xIsNext:(props.symbol==='X'? true:false), // todo: pls change this to just current turn symbol
+            currentTurn:props.symbol, 
             gameMode:props.mode,
             gridRow:props.row,
             gridColumn:props.column,
@@ -41,13 +41,34 @@ class Board extends React.Component {
             pvp:(props.mode==='pvp'?true:false),
             pvc:(props.mode==='pvc'?true:false),
             cvc:(props.mode==='cvc'?true:false),
-            computerTurn: 'O' // what the computer will run as
+            computerTurn: (props.symbol==='X'?'O':'X') // what the computer will run as
         }
     }
 
     // usage: this.setState{...,currentTurn : nextTurn(this.state.currentTurn) }
     nextTurn(symbol) {
-      return symbol=='X'?'O':'X'
+      return symbol==='X'?'O':'X'
+    }
+
+    // TODO: do this properly
+    reset(props) {
+      this.setState({
+        // ensure the same as constructor
+            squares:Array(props.row).fill().map( () => Array(props.column).fill(null) ),
+            currentTurn:props.symbol,
+            gameMode:props.mode,
+            gridRow:props.row,
+            gridColumn:props.column,
+            lowestValue: Math.min(props.row, props.column),
+            winner:null,
+            status: "",
+            winnerCoord: [],
+            // put this to props later ah
+            pvp:(props.mode==='pvp'?true:false),
+            pvc:(props.mode==='pvc'?true:false),
+            cvc:(props.mode==='cvc'?true:false),
+            computerTurn: (props.symbol==='X'?'O':'X') // what the computer will run as
+    })
     }
     
     handleClick(rowNum,colNum){
@@ -56,8 +77,8 @@ class Board extends React.Component {
         if (squares[rowNum][colNum] || this.state.winner) {
             return;
           }
-        squares[rowNum][colNum] = this.state.xIsNext ? 'X' : 'O';
-        this.setState({squares:squares, xIsNext:!this.state.xIsNext})
+        squares[rowNum][colNum] = this.state.currentTurn
+        this.setState({squares:squares, currentTurn:this.nextTurn(this.state.currentTurn)})
         
     }
 
@@ -87,21 +108,21 @@ class Board extends React.Component {
         this.setState({winner:winner[1], winnerCoord:winner[2]})
         return
       } else {
-        this.setState({status :`Next player: ${(this.state.xIsNext ? 'X' : 'O')}`})
+        this.setState({status :`Next player: ${(this.state.currentTurn)}`})
       }
       // for AI 
       // Check if it's ai's turn
       if(this.state.pvc && 
         ( 
-        (this.state.computerTurn=='X' && this.state.xIsNext ) || 
-        (this.state.computerTurn=='O' && !this.state.xIsNext)
+        (this.state.computerTurn==='X' && this.state.currentTurn==='X' ) || 
+        (this.state.computerTurn==='O' && this.state.currentTurn==='O')
         ) ) {
         // AI do the shet 
         this.moveAI(this.state.computerTurn);
       }
-      let cvc=false;
-      if (cvc) {
-        this.moveAI(this.state.xIsNext?'X':'O')
+      
+      if (this.state.cvc) {
+        this.moveAI(this.state.currentTurn)
       }
     }
 
@@ -120,27 +141,27 @@ class Board extends React.Component {
         if(!squares[i][j]) {
           // just move here bich  
           squares[i][j]= turn
-          this.setState({squares:squares, xIsNext:!this.state.xIsNext})
+          this.setState({squares:squares, currentTurn:this.nextTurn(this.state.currentTurn)})
           // just move once la
           return;
         }
       }
     }
 
-    stupidAI(turn) {
-      const squares = this.state.squares.slice();
-      for (let i = 0; i < squares.length ; i++) {
-        for (let j = 0; j < squares[i].length; j++) {
-          if(!squares[i][j]) {
-            // just move here bich
-            squares[i][j]= turn
-            this.setState({squares:squares, xIsNext:!this.state.xIsNext})
-            // just move once la
-            return;
-          }
-        }
-      }
-    }
+    // stupidAI(turn) {
+    //   const squares = this.state.squares.slice();
+    //   for (let i = 0; i < squares.length ; i++) {
+    //     for (let j = 0; j < squares[i].length; j++) {
+    //       if(!squares[i][j]) {
+    //         // just move here bich
+    //         squares[i][j]= turn
+    //         this.setState({squares:squares, currentTurn:this.nextTurn(this.state.currentTurn)})
+    //         // just move once la
+    //         return;
+    //       }
+    //     }
+    //   }
+    // }
     
 
     componentDidUpdate(_, prevState) {
@@ -149,14 +170,18 @@ class Board extends React.Component {
 
     componentDidMount() {
       // handle first turn AI move
-      if(this.state.pvc && ( (this.state.computerTurn=='X' && this.state.xIsNext ) || (this.state.computerTurn=='O' && !this.state.xIsNext))) {
+      if(this.state.pvc && 
+        ( 
+          (this.state.computerTurn==='X' && this.state.currentTurn==='X' ) || 
+          (this.state.computerTurn==='O' && this.state.currentTurn==='O')
+          )) {
         // AI do the shet 
         this.moveAI(this.state.computerTurn);
       }
       // TODO: change this accordingly later!!!!
-      let cvc=false
-      if (cvc) {
-        this.moveAI(this.state.xIsNext?'X':'O')
+      
+      if (this.state.cvc) {
+        this.moveAI(this.state.currentTurn)
       }
     }
   
@@ -174,7 +199,7 @@ class Board extends React.Component {
         <div>
           <div className="status">{this.state.status}</div>
           <div>{rows}</div>
-          {this.state.gameMode},{this.state.gridRow},{this.state.gridColumn},{String(this.state.xIsNext)}
+          {this.state.gameMode},{this.state.gridRow},{this.state.gridColumn},{this.state.currentTurn}
         </div>
       );
     }
