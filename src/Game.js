@@ -49,27 +49,6 @@ class Board extends React.Component {
     nextTurn(symbol) {
       return symbol==='X'?'O':'X'
     }
-
-    // TODO: do this properly
-    reset(props) {
-      this.setState({
-        // ensure the same as constructor
-            squares:Array(props.row).fill().map( () => Array(props.column).fill(null) ),
-            currentTurn:props.symbol,
-            gameMode:props.mode,
-            gridRow:props.row,
-            gridColumn:props.column,
-            lowestValue: Math.min(props.row, props.column),
-            winner:null,
-            status: "",
-            winnerCoord: [],
-            pvp:(props.mode==='pvp'?true:false),
-            pvc:(props.mode==='pvc'?true:false),
-            cvc:(props.mode==='cvc'?true:false),
-            computerTurn: (props.symbol==='X'?'O':'X'),
-            boardReset:(props.reset===0?false:true) // what the computer will run as
-    })
-    }
     
     handleClick(rowNum,colNum){
         const squares = this.state.squares.slice();
