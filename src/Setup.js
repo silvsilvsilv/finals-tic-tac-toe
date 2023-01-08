@@ -10,6 +10,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
@@ -76,6 +77,10 @@ export default function Setup() {
     setActiveStep(activeStep - 1);
   };
 
+    // function renderGame() {
+    //   return <Game mode={mode} row={row} column={column} symb={symb}/>
+    // }
+
   return (
       <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -88,16 +93,32 @@ export default function Setup() {
         }}
       >
         <Toolbar>
-          <Typography variant="h6" >
+        <Tooltip title="Reset the game">
+          <Button 
+          color='inherit' 
+          size='large' 
+          onClick={()=>{window.location.reload()}}
+          >
             Tic Tac Toe Game
-          </Typography>
+          </Button>
+          </Tooltip>
+          {activeStep===steps.length?(
+          <Button 
+          color='inherit' 
+          onClick={()=> console.log('click')} 
+          style={{marginLeft:'auto'}}
+          >
+          Try Again
+          </Button>
+          ):null
+          }
         </Toolbar>
 
       </AppBar>
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
         {activeStep === steps.length ? (
-            <Game mode={mode} row={row} column={column}  symb={symb}/>
+          <Game mode={mode} row={row} column={column} symb={symb} theme={theme}/>
           ) : (
           <>
           <Typography component="h1" variant="h4" align="center">

@@ -6,8 +6,7 @@ import './index.css';
 function Square(props){
     // check whether this coordinate is a winnning coordinate
     let isWinnerCoord=false
-    // TODO: check with actual list of winning coordinates here, populate list from checkWinner()
-    
+    //checks whether the i,j coordinate corresponds to the winnercoord from checkWinner()  
     for(let i = 0; i<props.winCoord.length;i++){
         if(props.winCoord[i][0]===props.row && props.winCoord[i][1]===props.col){
           isWinnerCoord=true
@@ -37,7 +36,6 @@ class Board extends React.Component {
             winner:null,
             status: "",
             winnerCoord: [],
-            // put this to props later ah
             pvp:(props.mode==='pvp'?true:false),
             pvc:(props.mode==='pvc'?true:false),
             cvc:(props.mode==='cvc'?true:false),
@@ -63,7 +61,6 @@ class Board extends React.Component {
             winner:null,
             status: "",
             winnerCoord: [],
-            // put this to props later ah
             pvp:(props.mode==='pvp'?true:false),
             pvc:(props.mode==='pvc'?true:false),
             cvc:(props.mode==='cvc'?true:false),
@@ -114,8 +111,8 @@ class Board extends React.Component {
       // Check if it's ai's turn
       if(this.state.pvc && 
         ( 
-        (this.state.computerTurn==='X' && this.state.currentTurn==='X' ) || 
-        (this.state.computerTurn==='O' && this.state.currentTurn==='O')
+        (this.state.computerTurn === this.state.currentTurn) || 
+        (this.state.computerTurn === this.state.currentTurn)
         ) ) {
         // AI do the shet 
         this.moveAI(this.state.computerTurn);
@@ -133,14 +130,14 @@ class Board extends React.Component {
 
     bitBetterAI(turn) {
       const squares = this.state.squares.slice();
-      // TODO: Probably can add limit if can't find within certain tries it just skip turn, change the xIsNext only
+      
       while(true) {
         // get random col and row
         let i = Math.floor(Math.random() * this.state.gridRow)
         let j = Math.floor(Math.random() * this.state.gridColumn)
         if(!squares[i][j]) {
           // just move here bich  
-          squares[i][j]= turn
+          squares[i][j] = turn
           this.setState({squares:squares, currentTurn:this.nextTurn(this.state.currentTurn)})
           // just move once la
           return;
@@ -172,14 +169,14 @@ class Board extends React.Component {
       // handle first turn AI move
       if(this.state.pvc && 
         ( 
-          (this.state.computerTurn==='X' && this.state.currentTurn==='X' ) || 
-          (this.state.computerTurn==='O' && this.state.currentTurn==='O')
+          (this.state.computerTurn === this.state.currentTurn) || 
+          (this.state.computerTurn === this.state.currentTurn)
           )) {
         // AI do the shet 
         this.moveAI(this.state.computerTurn);
       }
-      // TODO: change this accordingly later!!!!
-      
+     
+      //for ai vs ai
       if (this.state.cvc) {
         this.moveAI(this.state.currentTurn)
       }
@@ -199,7 +196,6 @@ class Board extends React.Component {
         <div>
           <div className="status">{this.state.status}</div>
           <div>{rows}</div>
-          {this.state.gameMode},{this.state.gridRow},{this.state.gridColumn},{this.state.currentTurn}
         </div>
       );
     }
@@ -387,8 +383,16 @@ class Board extends React.Component {
         row:props.row,
         column:props.column,
         symbol:props.symb,
+        theme:props.theme,
+        remainingPass:3,
       };
     }
+
+    handlePass(){
+      this.setState({remainingPass:remainingPass-1})
+    }
+
+
     render() {
       return (
         <div className="game" align="center">
@@ -400,14 +404,20 @@ class Board extends React.Component {
               symbol={this.state.symbol}
               />
           </div>
-          <div className="game-info">
-            
+          <div className="game-info"><br/>
+            <ButtonComponent theme={this.state.theme}/>
           </div>
         </div>
       );
     }
   }
   
+  function ButtonComponent(){
+      //TODO: Add pass button functionality
+    return(
+      <button onClick={()=>console.log('click')}>wkwkwkwk</button>
+    )
+  }
   // ========================================
   
   // const root = ReactDOM.createRoot(document.getElementById("root"));
