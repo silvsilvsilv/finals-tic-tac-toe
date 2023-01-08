@@ -1,6 +1,7 @@
 import React from 'react';
 // import ReactDOM from 'react-dom/client';
 import './index.css';
+// import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 function Square(props){
@@ -34,12 +35,13 @@ class Board extends React.Component {
             gridColumn:props.column,
             lowestValue: Math.min(props.row, props.column),
             winner:null,
-            status: "",
+            status: "Welcome!",
             winnerCoord: [],
             pvp:(props.mode==='pvp'?true:false),
             pvc:(props.mode==='pvc'?true:false),
             cvc:(props.mode==='cvc'?true:false),
-            computerTurn: (props.symbol==='X'?'O':'X') // what the computer will run as
+            computerTurn: (props.symbol==='X'?'O':'X'),
+            boardReset:(props.reset===0?false:true) // what the computer will run as
         }
     }
 
@@ -64,7 +66,8 @@ class Board extends React.Component {
             pvp:(props.mode==='pvp'?true:false),
             pvc:(props.mode==='pvc'?true:false),
             cvc:(props.mode==='cvc'?true:false),
-            computerTurn: (props.symbol==='X'?'O':'X') // what the computer will run as
+            computerTurn: (props.symbol==='X'?'O':'X'),
+            boardReset:(props.reset===0?false:true) // what the computer will run as
     })
     }
     
@@ -120,8 +123,12 @@ class Board extends React.Component {
       
       if (this.state.cvc) {
         this.moveAI(this.state.currentTurn)
-      }
+        }
+      
+     
     }
+
+     
 
     moveAI(turn) {
       //AI shenanigans
@@ -180,6 +187,8 @@ class Board extends React.Component {
       if (this.state.cvc) {
         this.moveAI(this.state.currentTurn)
       }
+
+     
     }
   
     render() {       
@@ -385,11 +394,12 @@ class Board extends React.Component {
         symbol:props.symb,
         theme:props.theme,
         remainingPass:3,
+        reset:props.reset,
       };
     }
 
     handlePass(){
-      this.setState({remainingPass:remainingPass-1})
+      this.setState({remainingPass: (this.state.remainingPass-1)})
     }
 
 
@@ -402,6 +412,7 @@ class Board extends React.Component {
               row={this.state.row} 
               column={this.state.column} 
               symbol={this.state.symbol}
+              reset={this.state.reset}
               />
           </div>
           <div className="game-info"><br/>

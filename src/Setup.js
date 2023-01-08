@@ -54,6 +54,8 @@ export default function Setup() {
   const [row, setRow] = React.useState(3);
   const [column, setColumn] = React.useState(3);
   const [symb, setSymb] = React.useState('X');
+  const [reset,setReset] = React.useState(0);
+
 
   function getStepContent(step) {
     
@@ -77,10 +79,7 @@ export default function Setup() {
     setActiveStep(activeStep - 1);
   };
 
-    // function renderGame() {
-    //   return <Game mode={mode} row={row} column={column} symb={symb}/>
-    // }
-
+  
   return (
       <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -105,7 +104,7 @@ export default function Setup() {
           {activeStep===steps.length?(
           <Button 
           color='inherit' 
-          onClick={()=> console.log('click')} 
+          onClick={()=>{console.log('try again')}} 
           style={{marginLeft:'auto'}}
           >
           Try Again
