@@ -202,6 +202,7 @@ class Board extends React.Component {
             onClick={()=>{this.handlePass()}}
             color={this.state.color}
             turn={this.state.currentTurn}
+            hidden={this.state.winner}
             />
         </div>
       );
@@ -419,7 +420,7 @@ class Board extends React.Component {
       sx={{ display: 'flex', justifyContent: 'flex-end' }} 
       onClick={props.onClick}
       variant='contained'
-      disabled={(props.count===0?true:false)}
+      disabled={( (props.count===0 || props.hidden)?true:false)}
       >
       {props.turn}{' '}
       {props.count===1?`${props.count} Pass Left`:`${props.count} Passes Left`} 
