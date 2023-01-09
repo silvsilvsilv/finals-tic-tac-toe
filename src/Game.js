@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import React from 'react';
 // import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -41,7 +42,8 @@ class Board extends React.Component {
             pvc:(props.mode==='pvc'?true:false),
             cvc:(props.mode==='cvc'?true:false),
             computerTurn: (props.symbol==='X'?'O':'X'),
-            boardReset:(props.reset===0?false:true) // what the computer will run as
+            remainingPass:3,
+            remainingXPass:3,// what the computer will run as
         }
     }
 
@@ -57,8 +59,7 @@ class Board extends React.Component {
             return;
           }
         squares[rowNum][colNum] = this.state.currentTurn
-        this.setState({squares:squares, currentTurn:this.nextTurn(this.state.currentTurn)})
-        
+        this.setState({squares:squares, currentTurn:this.nextTurn(this.state.currentTurn)})   
     }
 
     renderSquare(rowNum,colNum) {
@@ -99,15 +100,11 @@ class Board extends React.Component {
         // AI do the shet 
         this.moveAI(this.state.computerTurn);
       }
-      
+      //for AI vs AI
       if (this.state.cvc) {
         this.moveAI(this.state.currentTurn)
         }
-      
-     
     }
-
-     
 
     moveAI(turn) {
       //AI shenanigans
@@ -166,8 +163,23 @@ class Board extends React.Component {
       if (this.state.cvc) {
         this.moveAI(this.state.currentTurn)
       }
+    }
 
-     
+    handlePass(){
+      const squares=this.state.squares.slice();
+      if(this.state.currentTurn==='X'&&this.state.remainingPass>0){
+      this.setState({remainingXPass: (this.state.remainingXPass-1)})
+    }else{
+      this.setState({remainingPass:(this.state.remainingPass-1)})
+    }
+
+      let i = Math.floor(Math.random() * this.state.gridRow)
+      let j = Math.floor(Math.random() * this.state.gridColumn)
+      if(!squares[i][j]) {
+      //where to move
+      squares[i][j] = null
+      this.setState({squares:squares, currentTurn:this.nextTurn(this.state.currentTurn)})
+    }
     }
   
     render() {       
@@ -184,6 +196,13 @@ class Board extends React.Component {
         <div>
           <div className="status">{this.state.status}</div>
           <div>{rows}</div>
+          <br/>
+          <ButtonComponent
+            count={(this.state.currentTurn==='X'?this.state.remainingXPass:this.state.remainingPass)}
+            onClick={()=>{this.handlePass()}}
+            color={this.state.color}
+            turn={this.state.currentTurn}
+            />
         </div>
       );
     }
@@ -371,16 +390,8 @@ class Board extends React.Component {
         row:props.row,
         column:props.column,
         symbol:props.symb,
-        theme:props.theme,
-        remainingPass:3,
-        reset:props.reset,
       };
     }
-
-    handlePass(){
-      this.setState({remainingPass: (this.state.remainingPass-1)})
-    }
-
 
     render() {
       return (
@@ -391,21 +402,28 @@ class Board extends React.Component {
               row={this.state.row} 
               column={this.state.column} 
               symbol={this.state.symbol}
-              reset={this.state.reset}
               />
           </div>
-          <div className="game-info"><br/>
-            <ButtonComponent theme={this.state.theme}/>
+          <div className="game-info">
+           
           </div>
         </div>
       );
     }
   }
   
-  function ButtonComponent(){
+  function ButtonComponent(props){
       //TODO: Add pass button functionality
     return(
-      <button onClick={()=>console.log('click')}>wkwkwkwk</button>
+      <Button 
+      sx={{ display: 'flex', justifyContent: 'flex-end' }} 
+      onClick={props.onClick}
+      variant='contained'
+      disabled={(props.count===0?true:false)}
+      >
+      {props.turn}{' '}
+      {props.count===1?`${props.count} Pass Left`:`${props.count} Passes Left`} 
+      </Button>
     )
   }
   // ========================================

@@ -26,6 +26,7 @@ function Copyright() {
       {'Tic Tac Toe Finals Project | John Leonil Silva '}
       {new Date().getFullYear()}
       {'.'}
+      {'Gwapo kayka Sir'}
     </Typography>
   );
 }
@@ -54,7 +55,7 @@ export default function Setup() {
   const [row, setRow] = React.useState(3);
   const [column, setColumn] = React.useState(3);
   const [symb, setSymb] = React.useState('X');
-  const [reset,setReset] = React.useState(0);
+  const [reset,setReset] = React.useState(true);
 
   function resetGame() {
     setReset(!reset)
@@ -96,7 +97,7 @@ export default function Setup() {
         }}
       >
         <Toolbar>
-        <Tooltip title="Reset the game">
+        <Tooltip title="Reset the game" arrow>
           <Button 
           color='inherit' 
           size='large' 
@@ -104,15 +105,17 @@ export default function Setup() {
           >
             Tic Tac Toe Game
           </Button>
+        </Tooltip>
+        {activeStep===steps.length?(
+          <Tooltip title="Reset the board" arrow>
+            <Button 
+            color='inherit' 
+            onClick={() => resetGame()} 
+            style={{marginLeft:'auto'}}
+            >
+              Try Again
+            </Button>
           </Tooltip>
-          {activeStep===steps.length?(
-          <Button 
-          color='inherit' 
-          onClick={() => resetGame()} 
-          style={{marginLeft:'auto'}}
-          >
-          Try Again
-          </Button>
           ):null
           }
         </Toolbar>
@@ -120,8 +123,8 @@ export default function Setup() {
       </AppBar>
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-        {activeStep === steps.length ? ( reset? <Game key="game1" mode={mode} row={row} column={column} symb={symb} theme={theme}/>:
-          <Game key="game2" mode={mode} row={row} column={column} symb={symb} theme={theme}/>
+        {activeStep === steps.length ? ( reset? <Game key="game1" mode={mode} row={row} column={column} symb={symb} />:
+          <Game key="game2" mode={mode} row={row} column={column} symb={symb} />
           ) : (
           <>
           <Typography component="h1" variant="h4" align="center">
