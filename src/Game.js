@@ -16,7 +16,7 @@ function Square(props){
     }
       return (
         <button 
-        key={""+props.row+props.col} 
+        key={String(props.row)+String(props.col)} 
         className={(isWinnerCoord)?'square-winner':'square'} 
         onClick={(props.winner)?null:props.onClick}>
           {props.value}
@@ -119,10 +119,10 @@ class Board extends React.Component {
         let i = Math.floor(Math.random() * this.state.gridRow)
         let j = Math.floor(Math.random() * this.state.gridColumn)
         if(!squares[i][j]) {
-          // just move here bich  
+          // AI moves
           squares[i][j] = turn
           this.setState({squares:squares, currentTurn:this.nextTurn(this.state.currentTurn)})
-          // just move once la
+          // just move once
           return;
         }
       }
@@ -202,7 +202,7 @@ class Board extends React.Component {
             onClick={()=>{this.handlePass()}}
             color={this.state.color}
             turn={this.state.currentTurn}
-            hidden={this.state.winner}
+            tie={this.state.status}
             />
         </div>
       );
@@ -420,7 +420,7 @@ class Board extends React.Component {
       sx={{ display: 'flex', justifyContent: 'flex-end' }} 
       onClick={props.onClick}
       variant='contained'
-      disabled={( (props.count===0 || props.hidden)?true:false)}
+      disabled={( (props.count=== 0 || props.tie==='Tie!')?true:false)}
       >
       {props.turn}{' '}
       {props.count===1?`${props.count} Pass Left`:`${props.count} Passes Left`} 
