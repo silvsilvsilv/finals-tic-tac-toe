@@ -204,7 +204,7 @@ class Board extends React.Component {
           <div>{rows}</div>
           <br/>
           <ButtonComponent
-            count={(this.state.currentTurn==='X'?this.state.remainingXPass:this.state.remainingPass)}
+            count={(this.state.currentTurn===this.state.p1?this.state.remainingXPass:this.state.remainingPass)}
             onClick={()=>{this.handlePass()}}
             color={this.state.color}
             turn={this.state.currentTurn}

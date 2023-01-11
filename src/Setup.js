@@ -62,7 +62,7 @@ export default function Setup() {
   function resetGame() {
     setReset(!reset)
   }
- 
+  
 
   function getStepContent(step) {
     

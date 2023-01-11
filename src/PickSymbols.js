@@ -9,11 +9,13 @@ export default function PickSymbols({p1symb, setP1Symb, p2symb, setP2Symb}) {
   
   
   const handleP1Symb = (event) => {
-    setP1Symb(event.target.value);
+    const p1 = event.target.value.split('');
+    setP1Symb(p1[0]);
   };
 
   const handleP2Symb = (event) => {
-    setP2Symb(event.target.value);
+    const p2 = event.target.value.split('');
+    setP2Symb(p2[0]);
   };
 
   
@@ -24,20 +26,22 @@ export default function PickSymbols({p1symb, setP1Symb, p2symb, setP2Symb}) {
       </Typography>
 
       <Grid container spacing={3} padding = "20px">
-        <Grid item xs={12} >
-          <FormControl fullWidth>
+        <Grid item xs={12} md={6}>
+          <FormControl >
                 <TextField 
                 label="Player 1" 
                 variant="outlined" 
                 value={p1symb} 
                 onInput={handleP1Symb}></TextField>
-                <br/>
+          </FormControl>
+          </Grid>
+          <Grid item xs={12} md={6}>    
+          <FormControl>
                 <TextField 
                 label="Player 2" 
                 variant='outlined'
                 value={p2symb}
                 onInput={handleP2Symb}></TextField>
-              
           </FormControl>
         </Grid>
       </Grid>
