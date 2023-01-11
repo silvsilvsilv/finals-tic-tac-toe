@@ -1,40 +1,43 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
+import { TextField } from '@mui/material';
 
 
-export default function PickSymbols({symb, setSymb}) {
+export default function PickSymbols({p1symb, setP1Symb, p2symb, setP2Symb}) {
   
   
-  const handleSymb = (event) => {
-    setSymb(event.target.value);
+  const handleP1Symb = (event) => {
+    setP1Symb(event.target.value);
+  };
+
+  const handleP2Symb = (event) => {
+    setP2Symb(event.target.value);
   };
 
   
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        Player 1 pick the symbol you like, so that we can begin!  
+        Players set your respective symbols so that we can begin!  
       </Typography>
 
       <Grid container spacing={3} padding = "20px">
         <Grid item xs={12} >
           <FormControl fullWidth>
-            <InputLabel id="select-symb-label">Symbol</InputLabel>
-              <Select 
-                labelId="select-symbol"
-                id="select-symb"
-                label="Symbol"
-                value = {symb}
-                onChange={handleSymb}
-              >
-                <MenuItem value='X'>X</MenuItem>
-                <MenuItem value='O'>O</MenuItem>
-              </Select>
+                <TextField 
+                label="Player 1" 
+                variant="outlined" 
+                value={p1symb} 
+                onInput={handleP1Symb}></TextField>
+                <br/>
+                <TextField 
+                label="Player 2" 
+                variant='outlined'
+                value={p2symb}
+                onInput={handleP2Symb}></TextField>
+              
           </FormControl>
         </Grid>
       </Grid>

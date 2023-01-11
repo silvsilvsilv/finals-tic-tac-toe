@@ -30,7 +30,9 @@ class Board extends React.Component {
         super(props);
         this.state = {
             squares:Array(props.row).fill().map( () => Array(props.column).fill(null) ),
-            currentTurn:props.symbol, 
+            currentTurn:props.p1, 
+            p1:props.p1,
+            p2:props.p2,
             gameMode:props.mode,
             gridRow:props.row,
             gridColumn:props.column,
@@ -41,15 +43,15 @@ class Board extends React.Component {
             pvp:(props.mode==='pvp'?true:false),
             pvc:(props.mode==='pvc'?true:false),
             cvc:(props.mode==='cvc'?true:false),
-            computerTurn: (props.symbol==='X'?'O':'X'),
+            computerTurn:props.p2,// what the computer will run as
             remainingPass:3,
-            remainingXPass:3,// what the computer will run as
+            remainingXPass:3,
         }
     }
 
     // usage: this.setState{...,currentTurn : nextTurn(this.state.currentTurn) }
     nextTurn(symbol) {
-      return symbol==='X'?'O':'X'
+      return symbol===this.state.p1?this.state.p2:this.state.p1
     }
     
     handleClick(rowNum,colNum){
@@ -88,7 +90,7 @@ class Board extends React.Component {
         this.setState({winner:winner[1], winnerCoord:winner[2]})
         return
       } else {
-        this.setState({status :`Next player: ${(this.state.currentTurn)}`})
+        this.setState({status :`Current turn: ${(this.state.currentTurn)}`})
       }
       // for AI 
       // Check if it's ai's turn
@@ -102,13 +104,17 @@ class Board extends React.Component {
       }
       //for AI vs AI
       if (this.state.cvc) {
-        this.moveAI(this.state.currentTurn)
-        }
+        this.moveAI(this.state.computerTurn);
+      }
     }
 
     moveAI(turn) {
       //AI shenanigans
-      this.bitBetterAI(turn);
+      setTimeout(() => {
+        this.bitBetterAI(turn);
+      }, 1000);
+        
+
     }
 
     bitBetterAI(turn) {
@@ -167,7 +173,7 @@ class Board extends React.Component {
 
     handlePass(){
       const squares=this.state.squares.slice();
-      if(this.state.currentTurn==='X'&&this.state.remainingPass>0){
+      if(this.state.currentTurn===this.state.p1&&this.state.remainingPass>0){
       this.setState({remainingXPass: (this.state.remainingXPass-1)})
     }else{
       this.setState({remainingPass:(this.state.remainingPass-1)})
@@ -203,6 +209,7 @@ class Board extends React.Component {
             color={this.state.color}
             turn={this.state.currentTurn}
             tie={this.state.status}
+            haveWinner={this.state.winner}
             />
         </div>
       );
@@ -390,7 +397,8 @@ class Board extends React.Component {
         mode:props.mode,
         row:props.row,
         column:props.column,
-        symbol:props.symb,
+        p1:props.p1symb,
+        p2:props.p2symb,
       };
     }
 
@@ -402,7 +410,8 @@ class Board extends React.Component {
               mode={this.state.mode} 
               row={this.state.row} 
               column={this.state.column} 
-              symbol={this.state.symbol}
+              p1={this.state.p1}
+              p2={this.state.p2}
               />
           </div>
           <div className="game-info">
@@ -414,13 +423,13 @@ class Board extends React.Component {
   }
   
   function ButtonComponent(props){
-      //TODO: Add pass button functionality
+      
     return(
       <Button 
       sx={{ display: 'flex', justifyContent: 'flex-end' }} 
       onClick={props.onClick}
       variant='contained'
-      disabled={( (props.count=== 0 || props.tie==='Tie!')?true:false)}
+      disabled={( (props.count=== 0 || props.tie==='Tie!' || props.haveWinner)?true:false)}
       >
       {props.turn}{' '}
       {props.count===1?`${props.count} Pass Left`:`${props.count} Passes Left`} 

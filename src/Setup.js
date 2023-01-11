@@ -54,13 +54,15 @@ export default function Setup() {
   const [mode, setMode] = React.useState('pvp');
   const [row, setRow] = React.useState(3);
   const [column, setColumn] = React.useState(3);
-  const [symb, setSymb] = React.useState('X');
-  const [reset,setReset] = React.useState(true);
+  // const [symb, setSymb] = React.useState('X');
+  const [p1symb, setP1Symb] = React.useState('X');
+  const [p2symb, setP2Symb] = React.useState('O');
+  const [reset, setReset] = React.useState(true);
 
   function resetGame() {
     setReset(!reset)
   }
-
+ 
 
   function getStepContent(step) {
     
@@ -70,7 +72,7 @@ export default function Setup() {
       case 1:
         return <SetGridSize row={row} setRow={setRow} column={column} setColumn={setColumn}/>;
       case 2:
-        return <PickSymbols symb={symb} setSymb={setSymb} />;
+        return <PickSymbols p1symb={p1symb} setP1Symb={setP1Symb} p2symb={p2symb} setP2Symb={setP2Symb} />;
       default:
         throw new Error('Unknown step');
     }
@@ -123,8 +125,9 @@ export default function Setup() {
       </AppBar>
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-        {activeStep === steps.length ? ( reset? <Game key="game1" mode={mode} row={row} column={column} symb={symb} />:
-          <Game key="game2" mode={mode} row={row} column={column} symb={symb} />
+        {activeStep === steps.length ? ( reset? 
+          <Game key="game1" mode={mode} row={row} column={column} p1symb={p1symb} p2symb={p2symb} />:
+          <Game key="game2" mode={mode} row={row} column={column} p1symb={p1symb} p2symb={p2symb}/>
           ) : (
           <>
           <Typography component="h1" variant="h4" align="center">
