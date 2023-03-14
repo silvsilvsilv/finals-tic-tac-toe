@@ -1,16 +1,5 @@
 import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
-import Paper from '@mui/material/Paper';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
+import { CssBaseline,AppBar,Box,Container,Toolbar,Paper,Stepper,Step,StepLabel,Button,Typography,Tooltip} from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
@@ -97,7 +86,7 @@ export default function Setup() {
           position: 'relative',
           borderBottom: (t) => `1px solid ${t.palette.divider}`,
         }}
-      >
+      > 
         <Toolbar>
         <Tooltip title="Reset the game" arrow>
           <Button 
@@ -123,7 +112,7 @@ export default function Setup() {
         </Toolbar>
 
       </AppBar>
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+      <Container component="main" maxWidth={(activeStep===steps.length)&&( (row>5) && (column>5))?'':'sm'} sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
         {activeStep === steps.length ? ( reset? 
           <Game key="game1" mode={mode} row={row} column={column} p1symb={p1symb} p2symb={p2symb} />:

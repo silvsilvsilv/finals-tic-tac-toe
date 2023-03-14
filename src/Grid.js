@@ -1,21 +1,25 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
+import { Alert, TextField } from '@mui/material';
+
 
 
 export default function SetGridSize({row, setRow, column, setColumn}) {
-  
+  const [rowError,setRowError] = React.useState(false);
+  const [colError,setColError] = React.useState(false);
   
   const handleRow = (event) => {
-    setRow(event.target.value);
+    const n = String(event.target.value).split('');
+    if(isNaN(event.target.value)){setRowError(true);setRow(n[0]=0)}
+    else{setRowError(false); setRow( Number(n[0]) )}
   };
 
   const handleCol = (event) => {
-    setColumn(event.target.value);
+    const n = event.target.value.split('');
+    if(isNaN(event.target.value)){setColError(true);setColumn(n[0]=0)}
+    else{setColError(false); setColumn( Number(n[0]) )}
   };
 
 
@@ -28,40 +32,29 @@ export default function SetGridSize({row, setRow, column, setColumn}) {
       <Grid container spacing={3} padding = "20px">
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
-          <InputLabel id="select-row-label">Rows</InputLabel>
-            <Select 
-              labelId="select-row-label"
-              id="select-row"
-              value={row}
-              label="Rows"
-              onChange={handleRow} 
-            >
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={4}>4</MenuItem>
-              <MenuItem value={5}>5</MenuItem>
-            </Select>
+            <TextField
+            label='Row'
+            variant='outlined'
+            value={row}
+            error={rowError}
+            helperText={(rowError)?'Input numbers only':''}
+            onInput={handleRow}></TextField>
           </FormControl>
         </Grid>
 
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
-          <InputLabel id="select-col-label">Columns</InputLabel>
-            <Select 
-              labelId="select-col-label"
-              id="select=col"
-              value={column}
-              label="Columns"
-              onChange={handleCol} 
-              defaultValue = {'col3'}
-            >
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={4}>4</MenuItem>
-              <MenuItem value={5}>5</MenuItem>
-            </Select>
+          <TextField
+            label='Column'
+            variant='outlined'
+            value={column}
+            error={colError}
+            helperText={(colError)?'Input numbers only':''}
+            onInput={handleCol}></TextField>
           </FormControl>
         </Grid>
 
-      </Grid>
+      </Grid><Alert severity='error'>a</Alert>
     </React.Fragment>
   );
 }

@@ -1,8 +1,6 @@
 import { Button } from '@mui/material';
 import React from 'react';
-// import ReactDOM from 'react-dom/client';
 import './index.css';
-// import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 function Square(props){
@@ -33,7 +31,6 @@ class Board extends React.Component {
             currentTurn:props.p1, 
             p1:props.p1,
             p2:props.p2,
-            gameMode:props.mode,
             gridRow:props.row,
             gridColumn:props.column,
             lowestValue: Math.min(props.row, props.column),
@@ -104,7 +101,8 @@ class Board extends React.Component {
       }
       //for AI vs AI
       if (this.state.cvc) {
-        this.moveAI(this.state.computerTurn);
+        this.nextTurn(this.state.currentTurn);
+        this.moveAI(this.state.currentTurn);
       }
     }
 
