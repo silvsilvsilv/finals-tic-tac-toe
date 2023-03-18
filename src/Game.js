@@ -110,9 +110,7 @@ class Board extends React.Component {
       //AI shenanigans
       setTimeout(() => {
         this.bitBetterAI(turn);
-      }, 1000);
-        
-
+      }, 1);
     }
 
     bitBetterAI(turn) {

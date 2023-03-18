@@ -11,15 +11,31 @@ export default function SetGridSize({row, setRow, column, setColumn}) {
   const [colError,setColError] = React.useState(false);
   
   const handleRow = (event) => {
-    const n = String(event.target.value).split('');
-    if(isNaN(event.target.value)){setRowError(true);setRow(n[0]=0)}
-    else{setRowError(false); setRow( Number(n[0]) )}
+    const n = Number(event.target.value);
+    if(isNaN(event.target.value))
+    {
+      setRowError(true)
+      setRow(n)
+    }
+    else
+    {
+      setRowError(false)
+      setRow(n)
+    }
   };
 
   const handleCol = (event) => {
-    const n = event.target.value.split('');
-    if(isNaN(event.target.value)){setColError(true);setColumn(n[0]=0)}
-    else{setColError(false); setColumn( Number(n[0]) )}
+    const n = Number(event.target.value);
+    if(isNaN(event.target.value))
+    {
+      setColError(true)
+      setColumn(n)
+    }
+    else
+    {
+      setColError(false)
+      setColumn(n)
+    }
   };
 
 
@@ -54,7 +70,7 @@ export default function SetGridSize({row, setRow, column, setColumn}) {
           </FormControl>
         </Grid>
 
-      </Grid><Alert severity='error'>a</Alert>
+      </Grid><Alert severity='warning'>Only input numbers or there will be problems</Alert>
     </React.Fragment>
   );
 }
