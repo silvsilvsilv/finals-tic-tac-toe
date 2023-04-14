@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/finals-tic-tac-toe/static/css/main.d8e9cc6f.css",
+    "main.js": "/finals-tic-tac-toe/static/js/main.edd1a0cb.js",
+    "index.html": "/finals-tic-tac-toe/index.html",
+    "main.d8e9cc6f.css.map": "/finals-tic-tac-toe/static/css/main.d8e9cc6f.css.map",
+    "main.edd1a0cb.js.map": "/finals-tic-tac-toe/static/js/main.edd1a0cb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d8e9cc6f.css",
+    "static/js/main.edd1a0cb.js"
+  ]
+}
